@@ -51,9 +51,6 @@ export const searchUserController = async (req, res) => {
       return errorResponse(res, 404, "User not found");
     }
 
-    console.log("search body:", search);
-    console.log("hasil query SQL:", users);
-
     return successResponse(
       res,
       200,
