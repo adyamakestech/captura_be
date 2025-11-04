@@ -15,7 +15,13 @@ export const createUserModel = async (name, email, password) => {
 export const checkEmailModel = async (email) => {
   const res = await pool.query(
     `
-    SELECT id FROM users WHERE email = $1`,
+    SELECT id, name, email, role, password FROM users
+    WHERE
+      CASE 
+        WHEN POSITION('@' IN $1) > 0 THEN email = $1
+        ELSE name = $1
+      END
+    `,
     [email]
   );
   return res.rows;
@@ -56,21 +62,22 @@ export const getUserByIdModel = async (id) => {
   );
   return res.rows[0];
 };
+
 export const updateUserModel = async (id, data) => {
   const fields = [];
   const values = [];
   let index = 1;
+
+  if (Object.keys(data).length === 0) {
+    throw new Error("No fields provided to update");
+  }
 
   for (const [key, value] of Object.entries(data)) {
     fields.push(`${key} = $${index++}`);
     values.push(value);
   }
 
-  if (fields.length > 0) {
-    fields.push(`updated_at = CURRENT_TIMESTAMP`);
-  } else {
-    throw new Error("No fields provided to update");
-  }
+  fields.push(`updated_at = CURRENT_TIMESTAMP`);
 
   const query = `UPDATE users
   SET ${fields.join(", ")}

@@ -18,6 +18,7 @@ export const createUserController = async (req, res) => {
     if (existingUser.length > 0) {
       return errorResponse(res, 409, "Email already exists");
     }
+
     const hashedPassword = await hashPassword(password);
 
     const newUsers = await createUserModel(name, email, hashedPassword);
