@@ -15,7 +15,7 @@ export const createUserModel = async (name, email, password) => {
 export const checkEmailModel = async (email) => {
   const res = await pool.query(
     `
-    SELECT id, name, email, role, password FROM users
+    SELECT id, name, email, role, password, created_at FROM users
     WHERE
       CASE 
         WHEN POSITION('@' IN $1) > 0 THEN email = $1

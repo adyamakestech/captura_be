@@ -1,5 +1,8 @@
 import express from "express";
-import { uploadVideoController } from "../controllers/video.controller.js";
+import {
+  uploadVideoController,
+  deleteVideoController,
+} from "../controllers/video.controller.js";
 import { verifyToken } from "../middlewares/middleware.js";
 import { upload } from "../middlewares/video.js";
 
@@ -11,5 +14,6 @@ router.post(
   upload.single("video"),
   uploadVideoController
 );
+router.delete("/delete/:id", verifyToken, deleteVideoController);
 
 export default router;

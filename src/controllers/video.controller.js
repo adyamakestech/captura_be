@@ -1,8 +1,9 @@
-import { uploadVideoModel } from "../models/video.model.js";
+import { uploadVideoModel, deleteVideoModel } from "../models/video.model.js";
 import ffmpeg from "fluent-ffmpeg";
 import path from "path";
 import { errorResponse, successResponse } from "../utils/response.js";
 import { promisify } from "util";
+import { deleteFile } from "../middlewares/video.js";
 
 const ffprobeAsync = promisify(ffmpeg.ffprobe);
 
@@ -23,5 +24,23 @@ export const uploadVideoController = async (req, res) => {
     return successResponse(res, 200, "Success to upload video", video);
   } catch (err) {
     return errorResponse(res, 500, "Failed to upload video", err.message);
+  }
+};
+
+export const deleteVideoController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const filename = await deleteVideoModel(id, userId);
+
+    if (!filename) return errorResponse(res, 404, "Video not found");
+
+    const filePath = path.resolve("uploads/videos", filename);
+    deleteFile(filePath);
+
+    return successResponse(res, 200, "Video deleted successfully", { id });
+  } catch (err) {
+    return errorResponse(res, 500, "Failed to delete video", err.message);
   }
 };

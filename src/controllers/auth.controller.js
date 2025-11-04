@@ -52,9 +52,10 @@ export const loginController = async (req, res) => {
     }
 
     const token = generateToken({
-      id: existingUser.id,
-      name: existingUser.name,
       role: existingUser.role,
+      name: existingUser.name,
+      id: existingUser.id,
+      created_at: existingUser.created_at,
     });
 
     delete existingUser.password;
