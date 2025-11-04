@@ -12,6 +12,15 @@ export const createUserModel = async (name, email, password) => {
   return res.rows[0];
 };
 
+export const checkEmailModel = async (email) => {
+  const res = await pool.query(
+    `
+    SELECT id FROM users WHERE email = $1`,
+    [email]
+  );
+  return res.rows;
+};
+
 export const getAllUserModel = async (limit = 10, offset = 0) => {
   const res = await pool.query(
     `
@@ -22,7 +31,7 @@ export const getAllUserModel = async (limit = 10, offset = 0) => {
     `,
     [limit, offset]
   );
-  return res.rows[0];
+  return res.rows;
 };
 
 export const getUserModel = async (search) => {
@@ -37,6 +46,16 @@ export const getUserModel = async (search) => {
   return res.rows;
 };
 
+export const getUserByIdModel = async (id) => {
+  const res = await pool.query(
+    `SELECT id
+        FROM users 
+        WHERE id = $1
+        `,
+    [id]
+  );
+  return res.rows[0];
+};
 export const updateUserModel = async (id, data) => {
   const fields = [];
   const values = [];

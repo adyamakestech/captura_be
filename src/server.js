@@ -1,15 +1,23 @@
 import dotenv from "dotenv";
+import app from "./app.js";
 import db from "./config/dbconn.js";
 
 dotenv.config();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5050;
 
 db.connect()
   .then(() => {
-    console.log(`Server is running on port ${PORT}`);
-    // Here you can add more server initialization code if needed
+    console.log("✅ Database connected successfully!");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running at http://localhost:${PORT}`);
+    });
   })
   .catch((err) => {
-    console.error("Failed to connect to the database:", err);
+    console.error("❌ Failed to connect to the database:", err);
+    process.exit(1);
   });
+
+app.get("/", (req, res) => {
+  res.send("Server OK");
+});
