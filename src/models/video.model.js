@@ -1,14 +1,20 @@
 import pool from "../config/dbconn.js";
 
-export const uploadVideoModel = async (userId, title, filename, duration) => {
+export const uploadVideoModel = async (
+  userId,
+  title,
+  filename,
+  filepath,
+  duration
+) => {
   const res = await pool.query(
     `
     INSERT INTO videos 
-      (user_id, title, filename, duration)
-    VALUES ($1, $2, $3, $4)
-    RETURNING id, user_id, title, filename, duration
+      (user_id, title, filename, filepath, duration)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING id, user_id, title, filename, filepath, duration
     `,
-    [userId, title, filename, duration]
+    [userId, title, filename, filepath, duration]
   );
   return res.rows[0];
 };

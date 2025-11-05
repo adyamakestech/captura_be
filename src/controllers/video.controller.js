@@ -20,7 +20,14 @@ export const uploadVideoController = async (req, res) => {
     const metadata = await ffprobeAsync(filePath);
     const duration = metadata.format.duration;
 
-    const video = await uploadVideoModel(userId, title, filename, duration);
+    const video = await uploadVideoModel(
+      userId,
+      title,
+      filename,
+      filePath,
+      duration
+    );
+
     return successResponse(res, 200, "Success to upload video", video);
   } catch (err) {
     return errorResponse(res, 500, "Failed to upload video", err.message);
