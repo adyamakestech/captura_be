@@ -15,18 +15,15 @@ export const uploadVideoModel = async (userId, title, filename, duration) => {
 
 export const deleteVideoModel = async (videoId, userId) => {
   const res = await pool.query(
-    `SELECT filename FROM videos WHERE id = $1 AND user_id = $2`,
+    `
+    DELETE FROM videos
+    WHERE id = $1 AND user_id = $2
+    RETURNING filename
+    `,
     [videoId, userId]
   );
 
   if (res.rows.length === 0) return null;
 
-  const filename = res.rows[0].filename;
-
-  await pool.query(`DELETE FROM videos WHERE id = $1 AND user_id = $2`, [
-    videoId,
-    userId,
-  ]);
-
-  return filename;
+  return res.rows[0].filename;
 };
