@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/video.routes.js";
 import voiceoverRoutes from "./routes/voiceovers.routes.js";
 import captionRoutes from "./routes/caption.routes.js";
+import finaloutputRoutes from "./routes/finaloutput.routes.js";
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/video", videoRoutes);
 app.use("/api/voices", voiceoverRoutes);
 app.use("/api/captions", captionRoutes);
+app.use("/api/finaloutput", finaloutputRoutes);
 
 export default app;

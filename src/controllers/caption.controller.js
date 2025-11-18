@@ -4,7 +4,6 @@ import {
   updateCaptionModel,
   deleteCaptionModel,
 } from "../models/caption.model.js";
-
 import { errorResponse, successResponse } from "../utils/response.js";
 
 export const createCaptionController = async (req, res) => {
